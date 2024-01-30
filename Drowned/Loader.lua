@@ -1,8 +1,11 @@
-if getgenv().executed then
+if getgenv().executed1 then
     return
 end
 
-getgenv().executed = true
+getgenv().executed1 = true
+
+print("Loaded")
+
 
 local function identifyExecutor()
     if fluxus or Fluxus then
