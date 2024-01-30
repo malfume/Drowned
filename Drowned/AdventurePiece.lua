@@ -1,6 +1,7 @@
-if getgenv().executed then
+if getgenv().executed1 then
     return
 end
-getgenv().executed = true
+
+getgenv().executed1 = true
 
 print("TEST")
