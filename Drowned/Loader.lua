@@ -1,4 +1,4 @@
-if not Flux then
+if not FLUXUS_LOADED then
     game:GetService("Players").LocalPlayer:Kick("Your exploit is not supported!")
 end
 
