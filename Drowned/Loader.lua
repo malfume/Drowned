@@ -1,3 +1,9 @@
+if getgenv().executed then
+    return
+end
+
+getgenv().executed = true
+
 local function identifyExecutor()
     if fluxus or Fluxus then
         return "Fluxus"
