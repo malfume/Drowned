@@ -32,5 +32,5 @@ local GameScripts = {
 local GameID = game.GameId
 local ScriptName = GameScripts[GameID]
 if ScriptName then
-    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned/" .. ScriptName .. ".lua")))()
+    loadstring(game:HttpGet(("https://raw.githubusercontent.com/malfume/Drowned/main/Drowned/" .. ScriptName .. ".lua")))()
 end
