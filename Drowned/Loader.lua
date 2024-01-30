@@ -8,5 +8,5 @@ local GameIDs = {
 };
 
 if GameIDs[game.GameId] then
-    loadstring(game:HttpGet(("https://raw.githubusercontent.com/BillsTheGod/V3RMILLION_PROJECTS/main/el%20jeleba's%20hub/" .. GameIDs[game.GameId] .. ".lua")))()
+    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned" .. GameIDs[game.GameId] .. ".lua")))()
 end
