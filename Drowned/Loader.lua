@@ -11,18 +11,20 @@ local executor = identifyExecutor()
 if executor == "Fluxus" then
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "EXPLOIT DETECTION",
-        Text = "Executor: " .. executor,
+        Text = "Fluxus Executor Detected",
     })
 else
-    game:GetService("Players").LocalPlayer:Kick("Your exploit is not supported! (Executor: " .. executor .. ")")
+    game:GetService("Players").LocalPlayer:Kick("Your exploit is not supported!")
     return -- This will exit the script
 end
 
-local GameIDs = {
+local GameScripts = {
     [13772394625] = "BladeBall",
     [9731516308] = "AdventurePiece"
-};
+}
 
-if GameIDs[game.GameId] then
-    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned/" .. GameIDs[game.GameId] .. ".lua")))()
+local GameID = game.GameId
+local ScriptName = GameScripts[GameID]
+if ScriptName then
+    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned/" .. ScriptName .. ".lua")))()
 end
