@@ -4,4 +4,4 @@ end
 
 getgenv().executed1 = true
 
-print("TEST")
+print("Drowned Hub Has Loaded")
