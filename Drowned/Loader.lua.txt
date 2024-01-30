@@ -1,0 +1,12 @@
+if not Flux then
+    game:GetService("Players").LocalPlayer:Kick("Your exploit is not supported!")
+end
+
+local GameIDs = {
+    [13772394625] = "Blade Ball",
+    [9731516308] = "Adventure Piece"
+};
+
+if GameIDs[game.GameId] then
+    loadstring(game:HttpGet(("https://raw.githubusercontent.com/BillsTheGod/V3RMILLION_PROJECTS/main/el%20jeleba's%20hub/" .. GameIDs[game.GameId] .. ".lua")))()
+end
