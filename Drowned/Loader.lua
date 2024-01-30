@@ -1,4 +1,3 @@
--- Function to dynamically identify the executor
 local function identifyExecutor()
     if fluxus or Fluxus then
         return "Fluxus"
@@ -9,22 +8,21 @@ end
 
 local executor = identifyExecutor()
 
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "EXPLOIT DETECTION",
-    Text = "Executor: " .. executor,
-})
-
--- Kick player if the executor is not Fluxus
-if executor ~= "Fluxus" then
+if executor == "Fluxus" then
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "EXPLOIT DETECTION",
+        Text = "Executor: " .. executor,
+    })
+else
     game:GetService("Players").LocalPlayer:Kick("Your exploit is not supported! (Executor: " .. executor .. ")")
+    return -- This will exit the script
 end
 
--- Rest of your script
 local GameIDs = {
-    [13772394625] = "Blade Ball",
-    [9731516308] = "Adventure Piece"
+    [13772394625] = "BladeBall",
+    [9731516308] = "AdventurePiece"
 };
 
 if GameIDs[game.GameId] then
-    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned" .. GameIDs[game.GameId] .. ".lua")))()
+    loadstring(game:HttpGet(("https://github.com/malfume/Drowned/tree/main/Drowned/" .. GameIDs[game.GameId] .. ".lua")))()
 end
