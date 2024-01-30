@@ -2,20 +2,12 @@ if game.PlaceId ~= 9731516308 or shared.AdventurePiece then return end;
 
 shared.AdventurePiece = true;
 
+local repo = 'https://raw.githubusercontent.com/malfume/Linoria/main/'
+
 -- Load libraries
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/malfume/Linoria/main/Library.lua"))()
-local ThemeManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/malfume/Linoria/main/ThemeManager.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/malfume/Linoria/main/SaveManager.lua"))()
-
-local Options = {}
-
-
--- Services
-local StarterGui = game:GetService("StarterGui")
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'SaveManager.lua'))()
 
 -- Create Window and Tabs
 local Window = Library:CreateWindow({
@@ -34,9 +26,12 @@ local Tabs = {
 -- Main Tab - Movement
 local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Movement')
 
+local StarterGui = game:GetService("StarterGui")  -- Initialize StarterGui
+local Players = game:GetService("Players")  -- Initialize Players service
+
 local function findFruits()
     local fruits = {}
-    for _, object in pairs(Workspace:GetDescendants()) do
+    for _, object in pairs(workspace:GetDescendants()) do
         if object:IsA("BasePart") and string.find(object.Name:lower(), "fruit", 1, true) then
             table.insert(fruits, object)
         end
@@ -44,55 +39,141 @@ local function findFruits()
     return fruits
 end
 
-local collectedFruits = {}
-local checkFruitsToggle = false
+local function teleportAndCollectFruits()
+    local function checkGlobalFruitSpawn()
+        while true do
+            local fruits = findFruits()
+    
+            if #fruits > 0 then
+                -- Display global notification when a fruit spawns
+                StarterGui:SetCore("SendNotification", {
+                    Title = "Fruit Spawned",
+                    Text = "A fruit has spawned in the server!",
+                    Duration = 3
+                })
+            end
+    
+            wait(60) -- Check for fruit spawn every 60 seconds
+        end
+    end
+    
+    -- Start the global fruit spawn notification loop
+    coroutine.wrap(checkGlobalFruitSpawn)()
+    
+    local collectedFruits = {}  -- Track collected fruits to avoid duplicate notifications
+
+    while true do
+        if LeftGroupBox['Collect Fruits'] == true then  -- Check if the toggle is enabled  -- Check if the toggle is enabled
+            local fruits = findFruits()
+
+            if #fruits > 0 then
+                for _, fruit in pairs(fruits) do
+                    if not table.find(collectedFruits, fruit) then  -- Check if the fruit has not been collected
+                        local character = Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()
+                        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+                        humanoidRootPart.CFrame = fruit.CFrame
+
+                        -- Optionally add code here to interact with the fruit (e.g., hold "E" key)
+                        if fruit:IsA("BasePart") then
+                            -- Teleport to the fruit
+                            humanoidRootPart.CFrame = fruit.CFrame
+
+                            wait(1) -- Delay before interacting with the fruit
+
+                            -- Interact with the fruit (e.g., hold "E" key)
+                            game:GetService("UserInputService").InputBegan:Connect(function(input)
+                                if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.E then
+                                    print("Holding E key")
+                                    wait(3)  -- Hold "E" key for 3 seconds
+                                    print("Releasing E key")
+                                end
+                            end)
+
+                            wait(1) -- Delay between collecting each fruit
+
+                            -- Remove the fruit once it's collected
+                            fruit:Destroy()
+
+                            -- Display notification when a fruit is collected
+                            StarterGui:SetCore("SendNotification", {
+                                Title = "Fruit Collected",
+                                Text = "You collected a fruit!",
+                                Duration = 3
+                            })
+
+                            table.insert(collectedFruits, fruit)  -- Add the collected fruit to the list
+                        end
+                    end
+                end
+            end
+        end
+
+        wait(5) -- Check for fruits again after 5 seconds
+    end
+end
 
 local function teleportAndCollectFruits()
     local function checkGlobalFruitSpawn()
         while true do
-            if checkFruitsToggle then
-                StarterGui:SetCore("SendNotification", {
-                    Title = "Checking Map for Fruits",
-                    Text = "Checking the map for available fruits...",
-                    Duration = 3
-                })
+            local fruits = findFruits()
+
+            if #fruits > 0 then
+                for _, fruit in pairs(fruits) do
+                    -- Check if the fruit has not been collected
+                    if not table.find(collectedFruits, fruit) then
+                        -- Display global notification when a fruit spawns
+                        StarterGui:SetCore("SendNotification", {
+                            Title = "Fruit Spawned",
+                            Text = "A " .. fruit.Name .. " has spawned in the server!",
+                            Duration = 3
+                        })
+                    end
+                end
             end
-            wait(60)
+
+            wait(60) -- Check for fruit spawn every 60 seconds
         end
     end
 
+    -- Start the global fruit spawn notification loop
     coroutine.wrap(checkGlobalFruitSpawn)()
+
+    local collectedFruits = {}  -- Track collected fruits to avoid duplicate notifications
 
     while true do
         if LeftGroupBox['Collect Fruits'] == true then
             local fruits = findFruits()
 
-            if #fruits > 0 and checkFruitsToggle then
+            if #fruits > 0 then
                 for _, fruit in pairs(fruits) do
+                    -- Check if the fruit has not been collected
                     if not table.find(collectedFruits, fruit) then
                         local character = Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()
                         local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
-                        humanoidRootPart.CFrame = CFrame.new(fruit.Position + Vector3.new(0, 5, 0)) -- Teleport above the fruit
+                        humanoidRootPart.CFrame = fruit.CFrame
 
                         if fruit:IsA("BasePart") then
-                            wait(1)
+                            humanoidRootPart.CFrame = fruit.CFrame
+                            wait(1) -- Delay before interacting with the fruit
 
                             game:GetService("UserInputService").InputBegan:Connect(function(input)
                                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.E then
                                     print("Holding E key")
-                                    wait(3)
+                                    wait(3)  -- Hold "E" key for 3 seconds
                                     print("Releasing E key")
 
+                                    -- Check if the fruit is already collected
                                     if not table.find(collectedFruits, fruit) then
+                                        -- Display notification when a fruit is collected
                                         StarterGui:SetCore("SendNotification", {
                                             Title = "Fruit Collected",
                                             Text = "You collected a " .. fruit.Name,
                                             Duration = 3
                                         })
 
-                                        table.insert(collectedFruits, fruit)
+                                        table.insert(collectedFruits, fruit)  -- Add the collected fruit to the list
                                     else
+                                        -- Display notification if you already have that fruit
                                         StarterGui:SetCore("SendNotification", {
                                             Title = "Already Have",
                                             Text = "You already have a " .. fruit.Name,
@@ -100,29 +181,22 @@ local function teleportAndCollectFruits()
                                         })
                                     end
 
+                                    -- Remove the fruit once it's collected
                                     fruit:Destroy()
                                 end
                             end)
 
-                            wait(1)
+                            wait(1) -- Delay between collecting each fruit
                         end
                     end
                 end
             end
         end
 
-        wait(5)
+        wait(5) -- Check for fruits again after 5 seconds
     end
 end
 
-
-
--- Auto loot toggle
-LeftGroupBox:AddToggle('Collect Fruits', { Text = 'Auto Collect Fruits', Callback = function(value)
-    if value then
-        teleportAndCollectFruits()
-    end
-end })
 
 LeftGroupBox:AddToggle('Auto M1 Sword', { Text = 'Auto M1 Sword', Callback = function(value)
     if value then
