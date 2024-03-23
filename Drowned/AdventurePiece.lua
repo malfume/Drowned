@@ -1,4 +1,4 @@
-local expectedGameID = 9731516308
+local expectedGameID = 3608730484
 local currentGameID = game.GameId
 
 local function init()
