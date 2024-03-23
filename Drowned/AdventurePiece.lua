@@ -3,9 +3,9 @@ local currentGameID = game.GameId
 
 local function init()
     if currentGameID == expectedGameID then
-        print("test for Game ID " .. expectedGameID .. ". j!")
+        print("Correct id for Game ID " .. expectedGameID .. ". j!")
     else
-        print("test different Game ID: " .. currentGameID .. ". Fns!")
+        print("different Game ID: " .. currentGameID .. ". Fns!")
     end
 end
 
