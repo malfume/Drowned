@@ -3,6 +3,8 @@ local library = {
 	flags = { }, 
 	items = { } 
 }
+ if _G.Color == nil then _G.Color = Color3.fromRGB(128, 0, 128) end
+    if _G.Color2 == nil then _G.Color2 = Color3.fromRGB(72, 0, 72) end
 
 -- Services
 local players = game:GetService("Players")
