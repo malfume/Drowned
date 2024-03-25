@@ -11,7 +11,7 @@ local function findClosestBandit()
 	local minDistance = math.huge
 
 	for _, entity in ipairs(workspaceEntities:GetChildren()) do
-		if entity.Name == "Bandit" then
+		if entity.Name == "Marine" then
 			local banditPosition = entity:FindFirstChild("HumanoidRootPart").Position
 			local distance = (banditPosition - humanoidRootPart.Position).Magnitude
 
