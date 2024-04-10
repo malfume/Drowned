@@ -16,7 +16,7 @@ print("Verified key, result: " .. tostring(o_data))
 
 if "true2" == o_data then
     print("Key is a valid key !")
-    local scriptContent = game:HttpGet("https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul.lua")
+    local scriptContent = game:HttpGet("https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul")
     if scriptContent then
         local scriptFunction = loadstring(scriptContent)
         if scriptFunction then
