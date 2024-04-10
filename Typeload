@@ -18,12 +18,12 @@ if "true2" == o_data then
     print("Key is a valid key !")
     local scriptContent = game:HttpGet("https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul.lua")
     if scriptContent then
-        local scriptFunction = loadstring(scriptContent)
+        local scriptFunction, errorMessage = loadstring(scriptContent)
         if scriptFunction then
             scriptFunction() -- Execute the loaded script
             print("Executed script")
         else
-            print("Failed to load script: invalid Lua syntax")
+            print("Failed to load script: " .. errorMessage)
         end
     else
         print("Failed to load script: unable to retrieve content")
