@@ -1,4 +1,4 @@
-print("Starting script 2")
+print("Starting script 1")
 local keyString = _G.Key -- Use the global key
 
 -- Load the KeyLibrary
@@ -56,7 +56,7 @@ if o_data == "true2" then
             print("Failed to load script content")
         end
     else
-        print("No script URL found for current game ID")
+        print("No script URL found for current game ID:", game.GameId)
     end
 elseif o_data == "false1" then
     print("Key is not valid!")
