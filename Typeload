@@ -1,4 +1,4 @@
-print("Starting script 1")
+print("Starting script 3")
 local keyString = _G.Key -- Use the global key
 
 -- Load the KeyLibrary
@@ -29,7 +29,7 @@ if o_data == "true2" then
         [14069678431] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
         [14069866342] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
         [14069956183] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
-        [8501406566] = "https://raw.githubusercontent.com/malfume/Drowned/main/LegacyPiece",
+        [3246009126] = "https://raw.githubusercontent.com/malfume/Drowned/main/LegacyPiece",
         [14070000001] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
     }
 
