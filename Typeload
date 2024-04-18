@@ -1,59 +1,65 @@
-print("Starting script 1")
+print("Starting script 2")
 local keyString = _G.Key -- Use the global key
-local KeyLibrary = KeyLibrary or loadstring(game:HttpGet("https://raw.githubusercontent.com/MaGiXxScripter0/keysystemv2api/master/version2_2.lua"))()
+
+-- Load the KeyLibrary
+local KeyLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/MaGiXxScripter0/keysystemv2api/master/version2_2.lua"))()
 print("Loaded KeyLibrary")
+
+-- Set KeyLibrary parameters
 KeyLibrary.Set({
-    ApplicationName = "UruyuHub", -- /getkey/(ApplicationName)
-    AuthType = "clientid", -- Can select verification with ClientId or IP ("clientid" or "ip")
-    TrueData = "true2", -- When key is valid
-    FalseData = "false1", -- When key is invalid
-    Debug = true -- Enable debug mode
+    ApplicationName = "UruyuHub",
+    AuthType = "clientid",
+    TrueData = "true2",
+    FalseData = "false1",
+    Debug = true
 })
 print("Set KeyLibrary parameters")
 
+-- Verify the key
 local o_data = KeyLibrary.VerifyPremiumKey(keyString)
 print("Verified key, result: " .. tostring(o_data))
 
-if "true2" == o_data then
-    print("Key is a valid key !")
-    local scriptUrl
-    if game.GameId == 14070029709 then -- Replace with your game ID
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 14071822972 then -- Replace with your other game ID
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 14069122388 then -- Add more game IDs like this
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 14069678431 then
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 14069866342 then
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 14069956183 then
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    elseif game.GameId == 8501406566 then -- New game ID
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/LegacyPiece"
-        print("Game ID matched: 8501406566")
-    elseif game.GameId == 14070000001 then -- New game ID
-        scriptUrl = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
-    else
-        print("Unknown game ID")
-        return
-    end
-    local scriptContent = game:HttpGet(scriptUrl)
-    if scriptContent then
-        print("Script content retrieved")
-        local scriptFunction = loadstring(scriptContent)
-        if scriptFunction then
-            print("Script loaded successfully")
-            scriptFunction() -- Execute the loaded script
-            print("Executed script")
+-- Handle the verification result
+if o_data == "true2" then
+    print("Key is valid!")
+    local scriptUrls = {
+        [14070029709] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [14071822972] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [14069122388] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [14069678431] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [14069866342] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [14069956183] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul",
+        [8501406566] = "https://raw.githubusercontent.com/malfume/Drowned/main/LegacyPiece",
+        [14070000001] = "https://raw.githubusercontent.com/malfume/Drowned/main/DrownedHubTypesoul"
+    }
+
+    -- Fetch and execute the script
+    local scriptUrl = scriptUrls[game.GameId]
+    if scriptUrl then
+        print("Script URL found for current game ID")
+        local scriptContent = game:HttpGet(scriptUrl)
+        if scriptContent then
+            print("Script content retrieved")
+            local scriptFunction, errorMsg = loadstring(scriptContent)
+            if scriptFunction then
+                print("Script loaded successfully")
+                local success, error_msg = pcall(scriptFunction) -- Execute the loaded script
+                if not success then
+                    print("Failed to execute script:", error_msg)
+                else
+                    print("Executed script")
+                end
+            else
+                print("Failed to load script:", errorMsg)
+            end
         else
-            print("Failed to load script: invalid Lua syntax")
+            print("Failed to load script content")
         end
     else
-        print("Failed to load script: unable to retrieve content")
+        print("No script URL found for current game ID")
     end
-elseif "false1" == o_data then
-    print("Key is non-valid !")
+elseif o_data == "false1" then
+    print("Key is not valid!")
 else
-    print("error")
+    print("Unknown error occurred during key verification")
 end
